@@ -10,7 +10,7 @@ describe('nx-fastify e2e', () => {
     const plugin = uniq('nx-fastify');
     ensureNxProject('@plugified/nx-fastify', 'dist/packages/nx-fastify');
     await runNxCommandAsync(
-      `generate @plugified/nx-fastify:nxFastify ${plugin}`
+      `generate @plugified/nx-fastify:nx-fastify ${plugin}`
     );
 
     const result = await runNxCommandAsync(`build ${plugin}`);
@@ -24,7 +24,7 @@ describe('nx-fastify e2e', () => {
       const plugin = uniq('nx-fastify');
       ensureNxProject('@plugified/nx-fastify', 'dist/packages/nx-fastify');
       await runNxCommandAsync(
-        `generate @plugified/nx-fastify:nxFastify ${plugin} --directory subdir`
+        `generate @plugified/nx-fastify:nx-fastify ${plugin} --directory subdir`
       );
       expect(() =>
         checkFilesExist(`libs/subdir/${plugin}/src/index.ts`)
@@ -38,7 +38,7 @@ describe('nx-fastify e2e', () => {
       const plugin = uniq('nx-fastify');
       ensureNxProject('@plugified/nx-fastify', 'dist/packages/nx-fastify');
       await runNxCommandAsync(
-        `generate @plugified/nx-fastify:nxFastify ${plugin} --tags e2etag,e2ePackage`
+        `generate @plugified/nx-fastify:nx-fastify ${plugin} --tags e2etag,e2ePackage`
       );
       const nxJson = readJson('nx.json');
       expect(nxJson.projects[plugin].tags).toEqual(['e2etag', 'e2ePackage']);

@@ -3,10 +3,11 @@
   "name": "nx-fastify",
   "version": "0.0.1",
   "schematics": {
-    "nx-fastify": {
-      "factory": "./src/schematics/nx-fastify/schematic",
-      "schema": "./src/schematics/nx-fastify/schema.json",
-      "description": "nx-fastify schematic"
+    "init": {
+      "factory": "./src/schematics/init/schematic",
+      "schema": "./src/schematics/init/schema.json",
+      "description": "init schematic",
+      "hidden": true
     }
   }
 }
