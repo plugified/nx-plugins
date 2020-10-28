@@ -1,10 +1,5 @@
+import { noop, chain, Rule } from '@angular-devkit/schematics';
 import {
-  noop,
-  chain,
-  Rule
-} from '@angular-devkit/schematics';
-import {
-  ProjectType,
   addPackageWithInit,
   formatFiles,
   setDefaultCollection,
@@ -12,14 +7,8 @@ import {
   updateJsonInTree,
 } from '@nrwl/workspace';
 import { InitSchematicSchema } from './schema';
-import {
-  fastifyVersion,
-  nxVersion,
-} from "../../utils/versions";
-/**
- * Depending on your needs, you can change this to either `Library` or `Application`
- */
-const projectType = ProjectType.Application
+import { fastifyVersion, nxVersion } from '../../utils/versions';
+import { UnitTestRunner } from '../../utils/testing';
 
 function removeNrwlExpressFromDeps(): Rule {
   return updateJsonInTree('package.json', (json) => {
@@ -28,11 +17,11 @@ function removeNrwlExpressFromDeps(): Rule {
   });
 }
 
-export default function(options: InitSchematicSchema): Rule {
+export default function (options: InitSchematicSchema): Rule {
   return chain([
     setDefaultCollection('@plugified/nx-fastify'),
     addPackageWithInit('@nrwl/node', options),
-    options.unitTestRunner === 'jest'
+    options.unitTestRunner === UnitTestRunner.Jest
       ? addPackageWithInit('@nrwl/jest')
       : noop(),
     removeNrwlExpressFromDeps(),
