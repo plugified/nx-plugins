@@ -5,29 +5,19 @@ import {
   runNxCommandAsync,
   uniq,
 } from '@nrwl/nx-plugin/testing';
+
+jest.setTimeout(300000);
+
 describe('nx-fastify e2e', () => {
-  it('should create nx-fastify', async (done) => {
-    const plugin = uniq('nx-fastify');
-    ensureNxProject('@plugified/nx-fastify', 'dist/packages/nx-fastify');
-    await runNxCommandAsync(
-      `generate @plugified/nx-fastify:nx-fastify ${plugin}`
-    );
-
-    const result = await runNxCommandAsync(`build ${plugin}`);
-    expect(result.stdout).toContain('Builder ran');
-
-    done();
-  });
-
   describe('--directory', () => {
     it('should create src in the specified directory', async (done) => {
       const plugin = uniq('nx-fastify');
       ensureNxProject('@plugified/nx-fastify', 'dist/packages/nx-fastify');
       await runNxCommandAsync(
-        `generate @plugified/nx-fastify:nx-fastify ${plugin} --directory subdir`
+        `generate @plugified/nx-fastify:application ${plugin} --directory subdir`
       );
       expect(() =>
-        checkFilesExist(`libs/subdir/${plugin}/src/index.ts`)
+        checkFilesExist(`apps/subdir/${plugin}/src/main.ts`)
       ).not.toThrow();
       done();
     });
@@ -38,7 +28,7 @@ describe('nx-fastify e2e', () => {
       const plugin = uniq('nx-fastify');
       ensureNxProject('@plugified/nx-fastify', 'dist/packages/nx-fastify');
       await runNxCommandAsync(
-        `generate @plugified/nx-fastify:nx-fastify ${plugin} --tags e2etag,e2ePackage`
+        `generate @plugified/nx-fastify:application ${plugin} --tags e2etag,e2ePackage`
       );
       const nxJson = readJson('nx.json');
       expect(nxJson.projects[plugin].tags).toEqual(['e2etag', 'e2ePackage']);
