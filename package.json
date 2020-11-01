@@ -40,7 +40,6 @@
     "dotenv": "6.2.0",
     "eslint": "7.10.0",
     "eslint-config-prettier": "6.0.0",
-    "eslint-plugin-unused-imports": "^1.0.0",
     "jest": "26.2.2",
     "prettier": "2.0.4",
     "ts-jest": "26.4.0",
