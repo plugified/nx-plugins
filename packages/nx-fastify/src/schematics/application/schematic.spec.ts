@@ -25,6 +25,35 @@ describe('application schematic', () => {
     );
   });
 
+  it('should generate files inside subdir', async () => {
+    const tree = await testRunner
+      .runSchematicAsync(
+        'app',
+        { name: 'myFastifyApp', directory: 'subdir' },
+        appTree
+      )
+      .toPromise();
+    expect(
+      tree.readContent('apps/subdir/my-fastify-app/src/main.ts')
+    ).toContain(`import * as fastify from 'fastify'`);
+  });
+
+  it('should add tags to nx json', async () => {
+    const tree = await testRunner
+      .runSchematicAsync(
+        'app',
+        { name: 'myFastifyApp', tags: 'e2etag,e2ePackage' },
+        appTree
+      )
+      .toPromise();
+
+    const nxjson = readJsonInTree(tree, 'nx.json');
+    expect(nxjson.projects['my-fastify-app'].tags).toEqual([
+      'e2etag',
+      'e2ePackage',
+    ]);
+  });
+
   it('should update tsconfig', async () => {
     const tree = await testRunner
       .runSchematicAsync('app', { name: 'myFastifyApp' }, appTree)
