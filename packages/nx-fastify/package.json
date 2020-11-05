@@ -2,6 +2,15 @@
   "name": "@plugified/nx-fastify",
   "version": "0.0.1",
   "main": "src/index.js",
+  "description": "Nx plugin for Fastify HTTP Framework",
+  "keywords": [
+    "fastify nx monorepo plugin"
+  ],
+  "author": "Pradeep Chauhan<pradeepchauhan91@gmail.com>",
+  "license": "MIT",
   "schematics": "./collection.json",
-  "builders": "./builders.json"
+  "builders": "./builders.json",
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {}
 }
