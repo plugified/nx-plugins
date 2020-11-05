@@ -10,5 +10,6 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
+  verbose: true,
   coverageDirectory: '../../coverage/e2e/nx-fastify-e2e',
 };
