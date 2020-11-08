@@ -1,0 +1,79 @@
+name: Test and Build and Publish to NPM repository
+
+on:
+  create:
+    tags:
+      - '*'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    name: Run test for affected projects
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npx nx affected --target=test --all
+  testE2E:
+    needs: test
+    name: Run e2e test for affected projects
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npx nx affected --target=e2e --all
+  tagInfo:
+    needs: testE2E
+    name: Extract project name and version from tag
+    runs-on: ubuntu-latest
+
+    outputs:
+      packageName: ${{ steps.extract.outputs.packageName }}
+      packageVersion: ${{ steps.extract.outputs.packageVersion }}
+
+    steps:
+      - id: extract
+        shell: bash
+        run: |
+          echo ${{ github.ref }} 
+          echo "::set-output name=packageName::`echo \"${{ github.ref }}\" | awk -F '__' '{print $1}' | cut -d "/" -f 3`"
+          echo "::set-output name=packageVersion::`echo \"${{ github.ref }}\" | awk -F '__' '{print $2}'`"
+  build:
+    needs: tagInfo
+    name: Build and Publish ${{ needs.tagInfo.outputs.packageName }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org/'
+          scope: '@plugified'
+      - run: npm ci
+      - run: npx nx build ${{ needs.tagInfo.outputs.packageName }}
+      - run: npx json -I -f ./dist/packages/${{ needs.tagInfo.outputs.packageName }}/package.json -e 'this.version="${{ needs.tagInfo.outputs.packageVersion }}"'
+      - run: npm publish ./dist/packages/${{ needs.tagInfo.outputs.packageName }} --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

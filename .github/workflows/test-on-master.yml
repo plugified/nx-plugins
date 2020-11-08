@@ -3,6 +3,8 @@ name: Test affected nx-plugins
 on:
   push:
     branches: [main]
+    tags-ignore:
+      - '*'
   pull_request:
     branches: [main]
 
