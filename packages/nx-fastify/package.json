@@ -11,6 +11,12 @@
   "schematics": "./collection.json",
   "builders": "./builders.json",
   "scripts": {},
-  "devDependencies": {},
-  "dependencies": {}
+  "peerDependencies": {
+    "@nrwl/workspace": "*"
+  },
+  "dependencies": {
+    "@nrwl/node": "*",
+    "@nrwl/jest": "*",
+    "@angular-devkit/schematics": "~10.1.3"
+  }
 }
