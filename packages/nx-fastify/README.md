@@ -1,7 +1,45 @@
-# nx-fastify
+# @plugified/nx-fastify
 
-This library was generated with [Nx](https://nx.dev).
+## Table of Contents
 
-## Running unit tests
+- [Usage](#usage)
+- [Project schematics](#project-schematics)
+- [Build](#build)
 
-Run `nx test nx-fastify` to execute the unit tests via [Jest](https://jestjs.io).
+## Usage
+
+Add this plugin to an Nx workspace:
+
+```
+yarn add @plugified/nx-fastify
+```
+
+or
+
+```
+npm install @plugified/nx-fastify --save
+```
+
+## Project schematics
+
+Generate your project:
+
+```
+nx g @plugified/nx-fastify:application my-app
+```
+
+## Build
+
+Build your project:
+
+```
+nx build my-app
+```
+
+## Serve
+
+Serve with:
+
+```
+nx serve my-app
+```
