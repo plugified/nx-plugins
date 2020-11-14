@@ -21,7 +21,7 @@ describe('application schematic', () => {
       .runSchematicAsync('app', { name: 'myFastifyApp' }, appTree)
       .toPromise();
     expect(tree.readContent('apps/my-fastify-app/src/main.ts')).toContain(
-      `import * as fastify from 'fastify'`
+      `import fastify, { FastifyInstance, RouteShorthandOptions } from 'fastify';`
     );
   });
 
@@ -35,7 +35,9 @@ describe('application schematic', () => {
       .toPromise();
     expect(
       tree.readContent('apps/subdir/my-fastify-app/src/main.ts')
-    ).toContain(`import * as fastify from 'fastify'`);
+    ).toContain(
+      `import fastify, { FastifyInstance, RouteShorthandOptions } from 'fastify';`
+    );
   });
 
   it('should add tags to nx json', async () => {
